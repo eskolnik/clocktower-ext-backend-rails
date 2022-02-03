@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  secret_key: MyString
+  session_id: MyString
+  player_id: MyString
+  is_active: false
+
+two:
+  secret_key: MyString
+  session_id: MyString
+  player_id: MyString
+  is_active: false

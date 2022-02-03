@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  game_session: one
+  player_id: MyString
+  is_host: false
+  players: MyText
+  bluffs: MyText
+  edition: MyText
+  roles: MyText
+  version: 1
+
+two:
+  game_session: two
+  player_id: MyString
+  is_host: false
+  players: MyText
+  bluffs: MyText
+  edition: MyText
+  roles: MyText
+  version: 1

@@ -1,0 +1,30 @@
+<div>
+  <h1 class="font-bold text-2xl">Grimoires#index</h1>
+  <table class="border-collapse border border-gray-500">
+    <tr>
+        <th class="border border-gray-500">Session</th>
+        <th class="border border-gray-500">Player Id</th>
+        <th class="border border-gray-500">Is Host</th>
+        <th class="border border-gray-500">Players</th>
+        <th class="border border-gray-500">Bluffs</th>
+        <th class="border border-gray-500">Edition</th>
+        <th class="border border-gray-500">Roles</th>
+        <th class="border border-gray-500">Version</th>
+        <th class="border border-gray-500">Updated</th>
+    </tr>
+
+    <% @grimoires.each do |grim| %>
+        <tr>
+            <td class="border border-gray-500"><%= grim.game_session %></td>
+            <td class="border border-gray-500"><%= grim.player_id %></td>
+            <td class="border border-gray-500"><%= grim.is_host %></td>
+            <td class="border border-gray-500"><%= grim.players %></td>
+            <td class="border border-gray-500"><%= grim.bluffs %></td>
+            <td class="border border-gray-500"><%= grim.edition %></td>
+            <td class="border border-gray-500"><%= grim.roles %></td>
+            <td class="border border-gray-500"><%= grim.version %></td>
+            <td class="border border-gray-500"><%= grim.updated_at %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
