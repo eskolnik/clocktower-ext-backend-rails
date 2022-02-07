@@ -10,9 +10,10 @@ class BroadcastersController < ApplicationController
     render :json => @broadcaster
   end
 
-  # POST /broadcasters/:channel_id
+  # POST /broadcasters/
   def create
     broadcaster = Broadcaster.find_by(channel_id: params[:channel_id]) || Broadcaster.new
+
     broadcaster.channel_id = params[:channel_id]
     broadcaster.secret_key = params[:secret_key]
 

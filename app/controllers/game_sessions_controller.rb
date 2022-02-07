@@ -7,28 +7,21 @@ class GameSessionsController < ApplicationController
 
   # POST /game_sessions
   def create
-    session = GameSession.new
+    broadcaster = Broadcaster.find_by(secret_key: params[:secret_key])
 
-    if (params[:secret_key])
-      broadcaster = Broadcaster.find_by(secret_key: params[:secret_key])
-      session.broadcaster = broadcaster
+    if (!broadcaster)
+      render :json => { status: "error" }
+      return
     end
 
+    session = broadcaster.game_session || GameSession.new
+    session.broadcaster = broadcaster
+
     session.secret_key = params[:secret_key]
-    session.session_id = params[:session_id]
+    session.session_id = params[:session]
     session.player_id = params[:player_id]
     session.is_active = params[:is_active]
 
     session.save
-  end
-
-  def update
-  end
-
-  def destroy
-  end
-
-  def show
-    # session = GameSession.find_by(channel_id: )
   end
 end

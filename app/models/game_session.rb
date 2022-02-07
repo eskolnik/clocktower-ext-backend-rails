@@ -1,5 +1,5 @@
 class GameSession < ApplicationRecord
   belongs_to :broadcaster
 
-  has_many :grimoires
+  has_one :grimoire
 end
