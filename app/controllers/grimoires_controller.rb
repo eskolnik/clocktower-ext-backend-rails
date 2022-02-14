@@ -1,4 +1,5 @@
 class GrimoiresController < ApplicationController
+  before_action :restrict_to_development, :only => [:index]
 
   # GET /grimoires
   def index
@@ -10,14 +11,18 @@ class GrimoiresController < ApplicationController
   # GET /grimoires/:channel_id
   def show
     broadcaster = Broadcaster.find_by(channel_id: params[:id])
+
     if (!broadcaster)
       render :json => { status: "error", message: "Channel Not Found: #{params[:id]}" }
       return
     end
 
-    session = broadcaster&.game_session
+    grimoire = broadcaster&.game_session&.grimoire
 
-    grimoire = session&.grimoire
+    if (!grimoire)
+      render :json => { status: "error", message: "Grimoire Not Found: #{params[:id]}" }
+      return
+    end
 
     render :json => grimoire.json_view.to_json
   end

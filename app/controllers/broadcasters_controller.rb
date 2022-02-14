@@ -1,13 +1,20 @@
+require "jwt"
+
 class BroadcastersController < ApplicationController
+  before_action :restrict_to_development, :only => [:index]
+
   def index
-    @casters = Broadcaster.all
-    render :json => @casters
+    @broadcasters = Broadcaster.all
+    render :json => @broadcasters
   end
 
   # GET /broadcasters/:channel_id
   def show
     @broadcaster = Broadcaster.find_by(channel_id: params[:id])
-    render :json => @broadcaster
+    if (!@broadcaster)
+      return false
+    end
+    render :json => @broadcaster&.json_view
   end
 
   # POST /broadcasters/

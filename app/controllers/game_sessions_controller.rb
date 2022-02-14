@@ -1,4 +1,6 @@
 class GameSessionsController < ApplicationController
+  before_action :restrict_to_development, :only => [:index]
+
   def index
     sessions = GameSession.all
 

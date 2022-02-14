@@ -1,3 +1,5 @@
+require "jwt"
+
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
@@ -13,6 +15,34 @@ class ApplicationController < ActionController::Base
     render json: {}
   end
 
+  def auth_header
+    request.headers["Authorization"]
+  end
+
+  def decoded_token
+    if !auth_header
+      raise Exception.new "Invalid Authorization Token"
+    end
+    auth = auth_header.split(" ")
+
+    # Header must be prefixed with "Bearer"
+    if auth[0] != "Bearer"
+      raise Exception.new "Invalid Authorization Token"
+    end
+
+    secret = Rails.application.credentials.twitch[:extension_secret]
+    algorithm = Rails.application.credentials.jwt_algorithm
+
+    JWT.decode auth[1], secret, true, { algorithm: algorithm }
+  end
+
+  def sign(payload)
+    secret = Rails.application.credentials.twitch[:extension_secret]
+    algorithm = Rails.application.credentials.jwt_algorithm
+
+    JWT.encode payload, secret, algorithm
+  end
+
   protected
 
   def cors_set_access_control_headers
@@ -22,6 +52,10 @@ class ApplicationController < ActionController::Base
     "Auth-Token, Email, X-User-Token, X-User-Email, x-xsrf-token"
     response.headers["Access-Control-Max-Age"] = "1728000"
     response.headers["Access-Control-Allow-Credentials"] = true
+  end
+
+  def restrict_to_development
+    head(:bad_request) unless Rails.env.development?
   end
 
   private

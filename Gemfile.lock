@@ -87,6 +87,10 @@ GEM
     diff-lcs (1.5.0)
     e2mmap (0.1.0)
     erubi (1.10.0)
+    faraday (2.2.0)
+      faraday-net_http (~> 2.0)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (2.0.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.8.11)
@@ -101,6 +105,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jwt (2.3.0)
     kramdown (2.3.1)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -127,6 +132,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (7.0.0)
@@ -192,6 +199,7 @@ GEM
     rubocop-ast (1.15.1)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
+    ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     rufo (0.13.0)
     selenium-webdriver (4.1.0)
@@ -259,9 +267,12 @@ DEPENDENCIES
   bootsnap
   capybara
   debug
+  faraday
   importmap-rails
   jbuilder
+  jwt
   puma (~> 5.0)
+  rack-cors
   rails (~> 7.0.0)
   rspec-rails
   rufo (~> 0.13.0)
