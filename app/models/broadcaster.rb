@@ -1,7 +1,7 @@
 # the Ruby JWT library doesn't seem up to the task, so we're rolling our own.
 require "json"
 require "base64"
-require "OpenSSL"
+require "openssl"
 
 class Broadcaster < ApplicationRecord
   has_one :game_session
@@ -29,10 +29,9 @@ class Broadcaster < ApplicationRecord
 
     now = Time.now.to_i
     expiration = now + expirationOffset
-    # expiration = Time.now.to_i + expirationOffset
 
     # generated JWT will expire in one day from creation
-    Rails.cache.fetch(self, expires_in: 5.seconds) do
+    Rails.cache.fetch(self, expires_in: 1.days) do
       # Twitch JWT schema reference: https://dev.twitch.tv/docs/extensions/reference/#jwt-schema
       payload = {
         channel_id: self.channel_id.to_s,
@@ -46,7 +45,6 @@ class Broadcaster < ApplicationRecord
       }
 
       signed = sign(payload)
-      puts signed
       return signed
     end
   end
@@ -69,7 +67,6 @@ class Broadcaster < ApplicationRecord
     jwt_payload_JSON = payload.to_json
     jwt_payload_UTF = jwt_payload_JSON.encode("UTF-8")
     token_payload = Base64.urlsafe_encode64(jwt_payload_UTF, padding: false)
-    puts "token_payload " + token_payload
 
     signed_data = token_header + "." + token_payload
 

@@ -29,23 +29,21 @@ class Grimoire < ApplicationRecord
 
   # Attempt to send the grimoire to twitch
   def send_to_twitch
-    twitch_pubsub_url = "https://api.twitch.tv/extensions/message"
+    twitch_pubsub_url = Rails.application.credentials.twitch[:pubsub_url]
+    puts twitch_pubsub_url
 
     broadcaster = self.game_session.broadcaster
 
     token = broadcaster.json_web_token
     channel_id = broadcaster.channel_id
 
-    # twitch_url = "#{twitch_pubsub_url}"
-
     message = self.json_view
 
     body = {
-      content_type: "application/json",
-      message: { test: "help pls" }.to_json,
-      targets: ["broadcast"],
+      broadcaster_id: channel_id,
+      message: message.to_json,
+      target: ["broadcast"],
     }
-
 
     conn = Faraday.new(
       url: twitch_pubsub_url,
@@ -57,11 +55,8 @@ class Grimoire < ApplicationRecord
       },
     )
 
-    postreq = conn.post(channel_id.to_s) do |request|
+    conn.post do |request|
       request.body = body.to_json
     end
-
-    binding.break
-    puts postreq
   end
 end
