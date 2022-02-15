@@ -1,27 +1,11 @@
-# README
+# Paperweight Clocktower Backend
+This is the backend of a Twitch extension for streamed games of Blood on the Clocktower.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This extension is designed to be used in conjunction with the unofficial [Townsquare](https://clocktower.online/) web app. 
 
-Things you may want to cover:
+# Endpoints
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ## JWT AUTH
+## JWT AUTH
 These endpoints are called by the Twitch extension, and require a signed JWT to function.
 
 ### GET /grimoires/:channel_id
@@ -29,7 +13,7 @@ Loads the grimoire for a channelId based on JWT. Currently only capable of loadi
 
 ### GET /broadcasters/:channel_id
 Get a broadcaster's secret key. Used for config view only
-
+    
 ### POST /broadcasters
 Update a broadcaster's secret key
 
@@ -48,3 +32,11 @@ The `isActive` flag marks whether the session should be sent to the viewers (whe
 
 
 
+
+## Acknowledgements and Copyrights
+* [Blood on the Clocktower](https://bloodontheclocktower.com/) is a trademark of Steven Medway and [The Pandemonium Institute](https://www.thepandemoniuminstitute.com/)
+* Unofficial [Townsquare](https://github.com/bra1n/townsquare) application by [bra1n](https://github.com/bra1n)
+* Webfonts by [Google Fonts](https://fonts.google.com/)
+* All other images and icons are copyright to their respective owners
+
+This project and its website are provided free of charge and not affiliated with The Pandemonium Institute in any way.
