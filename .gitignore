@@ -40,3 +40,5 @@
 # Ignore rsync folder
 rsync
 *.pem
+config/database.yml
+# /config/database.yml

@@ -15,6 +15,9 @@ gem "sqlite3", "~> 1.4"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
+# Use Passenger webserver
+gem "passenger", ">= 5.0.25", require: "phusion_passenger/rack_handler"
+
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
 
@@ -76,6 +79,12 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  # Use Capistrano for deployment
+  gem "capistrano", "~> 3.16", require: false
+  gem "capistrano-rails", "~> 1.3", require: false
+  gem "capistrano-asdf"
+  gem "capistrano-passenger", 
 
   gem "solargraph"
 end
