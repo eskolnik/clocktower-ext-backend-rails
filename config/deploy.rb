@@ -9,6 +9,22 @@ set :branch, "capistrano-deploy"
 set :deploy_to, "/home/deploy/#{fetch :application}"
 
 append :linked_files, "config/master.key"
+# append :linked_files, "config/master.key"
+
+namespace :deploy do
+  namespace :check do
+    before :linked_files, :set_master_key do
+      on roles(:app), in: :sequence, wait: 10 do
+        unless test("[ -f #{shared_path}/config/master.key ]")
+          upload! 'config/master.key', "#{shared_path}/config/master.key"
+        end
+      end
+    end
+  end
+end
+
+# ASDF installed in opt for global access
+set :asdf_custom_path, '/opt/.asdf'  # only needed if not '~/.asdf'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
