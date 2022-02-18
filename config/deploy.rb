@@ -11,12 +11,36 @@ set :deploy_to, "/home/deploy/#{fetch :application}"
 append :linked_files, "config/master.key"
 # append :linked_files, "config/master.key"
 
+set :mod_group, "clocktower_admin"
+# set :mod_group_directories, ["current"]
+
+namespace :deploy do
+  task :mod_group do
+    on roles :app do
+      # dirs = fetch(:mod_group_directories, [])
+      execute "chgrp -R #{fetch(:mod_group)} #{release_path} && chmod -R g+w #{release_path}"
+      info "Group of #{release_path} changed to #{fetch(:mod_group)} and writable bit set"
+
+      # dirs.each do |dir|
+      #     execute "chgrp #{fetch(:mod_group)} #{current_path}/#{dir} && chmod g+w #{current_path}/#{dir}"
+      #     info "Group of #{current_path}/#{dir} changed to #{fetch(:mod_group)} and writable bit set"
+      # end
+    end
+  end
+
+  task :finished do
+    invoke "deploy:mod_group"
+  end
+end
+
 namespace :deploy do
   namespace :check do
     before :linked_files, :set_master_key do
       on roles(:app), in: :sequence, wait: 10 do
-        unless test("[ -f #{shared_path}/config/master.key ]")
-          upload! 'config/master.key', "#{shared_path}/config/master.key"
+        master_key_remote_path = "#{shared_path}/config/master.key"
+        unless test("[ -f #{master_key_remote_path} ]")
+          upload! "config/master.key", "#{master_key_remote_path}"
+          execute "chgrp #{fetch(:mod_group)} #{master_key_remote_path} && chmod g+r #{master_key_remote_path}"
         end
       end
     end
@@ -24,7 +48,7 @@ namespace :deploy do
 end
 
 # ASDF installed in opt for global access
-set :asdf_custom_path, '/opt/.asdf'  # only needed if not '~/.asdf'
+set :asdf_custom_path, "/opt/.asdf"  # only needed if not '~/.asdf'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -50,7 +74,6 @@ set :pty, true
 
 # Default value for default_env is {}
 set :default_env, { path: "/opt/.asdf/shims:$PATH" }
-
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }

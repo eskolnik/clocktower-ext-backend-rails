@@ -11,8 +11,10 @@ require "capistrano/rails"
 require "capistrano/asdf"
 
 # Use Passenger as our application server
-require "capistrano/passenger"
+# require "capistrano/passenger"
 
+
+# require "capistrano/mod_group"
 
 # Load the SCM plugin appropriate to your project:
 #
