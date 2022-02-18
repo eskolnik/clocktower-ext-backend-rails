@@ -1,5 +1,4 @@
 require "rails_helper"
-# require "debug"
 
 RSpec.describe "Grimoires", type: :request do
   fixtures :grimoires, :broadcasters, :game_sessions

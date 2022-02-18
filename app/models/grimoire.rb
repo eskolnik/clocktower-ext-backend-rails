@@ -1,5 +1,4 @@
 require "faraday"
-require "debug"
 
 class Grimoire < ApplicationRecord
   belongs_to :game_session
@@ -23,7 +22,7 @@ class Grimoire < ApplicationRecord
         "edition": parse(edition),
         "roles": parse(roles),
       },
-      isActive: self.game_session.is_active,
+      isActive: self.game_session&.is_active,
     }.deep_transform_keys { |k| k.to_s.camelize :lower }
   end
 
