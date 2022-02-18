@@ -40,7 +40,7 @@ set :asdf_custom_path, '/opt/.asdf'  # only needed if not '~/.asdf'
 # set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
 
 # Default value for :pty is false
-# set :pty, true
+set :pty, true
 
 # Default value for :linked_files is []
 # append :linked_files, "config/database.yml"
@@ -49,7 +49,8 @@ set :asdf_custom_path, '/opt/.asdf'  # only needed if not '~/.asdf'
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, { path: "/opt/.asdf/shims:$PATH" }
+
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
