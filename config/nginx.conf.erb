@@ -88,7 +88,7 @@ http {
         ssl_stapling on;
         ssl_stapling_verify on;
 
-        resolver <IP DNS resolver>;
+        resolver 169.254.169.253;
         ssl_dhparam /home/deploy/paperweight_clocktower/shared/config/dhparam.pem;
         ssl_trusted_certificate /etc/letsencrypt/live/paperweightclocktower.live/fullchain.pem;
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
