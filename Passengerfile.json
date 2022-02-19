@@ -5,7 +5,7 @@
     "daemonize": true,
     "user": "deploy",
     "ssl": true,
-    "ssl_certificate": "/etc/letsencrypt/live/paperweightclocktower.live/fullchain.pem",
+    "ssl_certificate": "/etc/letsencrypt/live/paperweightclocktower.live/chain.pem",
     "ssl_certificate_key": "/etc/letsencrypt/live/paperweightclocktower.live/privkey.pem",
     "nginx_config_template": "config/nginx.conf.erb"
 
