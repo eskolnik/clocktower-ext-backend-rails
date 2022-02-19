@@ -17,14 +17,8 @@ set :mod_group, "clocktower_admin"
 namespace :deploy do
   task :mod_group do
     on roles :app do
-      # dirs = fetch(:mod_group_directories, [])
       execute "chgrp -R #{fetch(:mod_group)} #{release_path} && chmod -R g+w #{release_path}"
       info "Group of #{release_path} changed to #{fetch(:mod_group)} and writable bit set"
-
-      # dirs.each do |dir|
-      #     execute "chgrp #{fetch(:mod_group)} #{current_path}/#{dir} && chmod g+w #{current_path}/#{dir}"
-      #     info "Group of #{current_path}/#{dir} changed to #{fetch(:mod_group)} and writable bit set"
-      # end
     end
   end
 
@@ -45,15 +39,15 @@ namespace :deploy do
       end
     end 
     
-    before :linked_files, :set_dhparamfile do
-      on roles(:app), in: :sequence, wait: 10 do
-        dhparam_remote_path = "#{shared_path}/config/dhparam.pem"
-        unless test("[ -f #{dhparam_remote_path} ]")
-          upload! "config/dhparam.pem", "#{dhparam_remote_path}"
-          execute "chgrp #{fetch(:mod_group)} #{dhparam_remote_path} && chmod g+r #{dhparam_remote_path}"
-        end
-      end
-    end
+    # before :linked_files, :set_dhparamfile do
+    #   on roles(:app), in: :sequence, wait: 10 do
+    #     dhparam_remote_path = "#{shared_path}/config/dhparam.pem"
+    #     unless test("[ -f #{dhparam_remote_path} ]")
+    #       upload! "config/dhparam.pem", "#{dhparam_remote_path}"
+    #       execute "chgrp #{fetch(:mod_group)} #{dhparam_remote_path} && chmod g+r #{dhparam_remote_path}"
+    #     end
+    #   end
+    # end
   end
 end
 
