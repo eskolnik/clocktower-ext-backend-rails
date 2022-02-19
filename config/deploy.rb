@@ -43,6 +43,16 @@ namespace :deploy do
           execute "chgrp #{fetch(:mod_group)} #{master_key_remote_path} && chmod g+r #{master_key_remote_path}"
         end
       end
+    end 
+    
+    before :linked_files, :set_dhparamfile do
+      on roles(:app), in: :sequence, wait: 10 do
+        dhparam_remote_path = "#{shared_path}/config/dhparam.pem"
+        unless test("[ -f #{dhparam_remote_path} ]")
+          upload! "config/dhparam.pem", "#{dhparam_remote_path}"
+          execute "chgrp #{fetch(:mod_group)} #{dhparam_remote_path} && chmod g+r #{dhparam_remote_path}"
+        end
+      end
     end
   end
 end

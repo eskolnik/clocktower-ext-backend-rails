@@ -1,7 +1,13 @@
 {
     "environment": "production",
-    "port": 8080,
+    "instance_registry_dir": "/var/run/passenger-instreg",
+    "port": 443,
     "daemonize": true,
-    "user": "deploy"
+    "user": "deploy",
+    "ssl": true,
+    "ssl_certificate": "/etc/letsencrypt/live/paperweightclocktower.live/fullchain.pem",
+    "ssl_certificate_key": "/etc/letsencrypt/live/paperweightclocktower.live/privkey.pem",
+    "nginx_config_template": "config/nginx.conf.erb"
+
 }
   
