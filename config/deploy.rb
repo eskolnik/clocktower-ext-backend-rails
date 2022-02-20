@@ -11,23 +11,47 @@ set :deploy_to, "/home/deploy/#{fetch :application}"
 append :linked_files, "config/master.key"
 # append :linked_files, "config/master.key"
 
-set :mod_group, "clocktower_admin"
+set :admin_group_name, "clocktower_admin"
 # set :mod_group_directories, ["current"]
 
 namespace :deploy do
   task :mod_group do
     on roles :app do
-      execute "chgrp -R #{fetch(:mod_group)} #{release_path} && chmod -R g+w #{release_path}"
-      info "Group of #{release_path} changed to #{fetch(:mod_group)} and writable bit set"
+      execute "chgrp -R #{fetch(:admin_group_name)} #{release_path} && chmod -R g+w #{release_path}"
+      info "Group of #{release_path} changed to #{fetch(:admin_group_name)} and writable bit set"
     end
   end
 
-  task :finished do
+  task :passenger_stop do
+    on roles :app do
+      begin
+        execute "cd #{current_path} && passenger stop"
+        info "Passenger stopped"
+      rescue
+        info "Passenger was not running"
+      end
+    end
+  end
+
+  task :passenger_start do
+    on roles :app do
+      execute "cd #{current_path} && passenger start"
+      info "Passenger restarted"
+    end
+  end
+
+  task :published do
     invoke "deploy:mod_group"
   end
-end
 
-namespace :deploy do
+  # task :started do
+  #   invoke "deploy:passenger_stop"
+  # end
+
+  # task :finished do
+  #   invoke "deploy:passenger_start"
+  # end
+
   namespace :check do
     before :linked_files, :set_master_key do
       on roles(:app), in: :sequence, wait: 10 do
@@ -37,8 +61,8 @@ namespace :deploy do
           execute "chgrp #{fetch(:mod_group)} #{master_key_remote_path} && chmod g+r #{master_key_remote_path}"
         end
       end
-    end 
-    
+    end
+
     # before :linked_files, :set_dhparamfile do
     #   on roles(:app), in: :sequence, wait: 10 do
     #     dhparam_remote_path = "#{shared_path}/config/dhparam.pem"
