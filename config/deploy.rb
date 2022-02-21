@@ -4,7 +4,7 @@ lock "~> 3.16.0"
 set :application, "paperweight_clocktower"
 set :repo_url, "git@github.com:eskolnik/clocktower-ext-backend-rails.git"
 
-set :branch, "capistrano-deploy"
+set :branch, "deploy"
 
 set :deploy_to, "/home/deploy/#{fetch :application}"
 
