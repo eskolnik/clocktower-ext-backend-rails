@@ -25,8 +25,9 @@ namespace :deploy do
   task :passenger_stop do
     on roles :app do
       begin
-        execute "cd #{current_path} && passenger stop"
-        info "Passenger stopped"
+        # execute "cd #{current_path} && passenger stop"
+        execute "cd #{current_path} && kill $(passenger status | awk -F'Standalone is running on PID |,' '{print $2}')"
+        info "Passenger stopped in #{current_path}"
       rescue
         info "Passenger was not running"
       end
@@ -36,7 +37,7 @@ namespace :deploy do
   task :passenger_start do
     on roles :app do
       execute "cd #{current_path} && passenger start"
-      info "Passenger restarted"
+      info "Passenger restarted in #{current_path}"
     end
   end
 
@@ -44,13 +45,13 @@ namespace :deploy do
     invoke "deploy:mod_group"
   end
 
-  # task :started do
-  #   invoke "deploy:passenger_stop"
-  # end
+  task :started do
+    invoke "deploy:passenger_stop"
+  end
 
-  # task :finished do
-  #   invoke "deploy:passenger_start"
-  # end
+  task :finished do
+    invoke "deploy:passenger_start"
+  end
 
   namespace :check do
     before :linked_files, :set_master_key do
