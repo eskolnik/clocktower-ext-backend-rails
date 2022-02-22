@@ -11,14 +11,14 @@ set :deploy_to, "/home/deploy/#{fetch :application}"
 append :linked_files, "config/master.key"
 # append :linked_files, "config/master.key"
 
-set :admin_group_name, "clocktower_admin"
+admin_group_name, "clocktower_admin"
 # set :mod_group_directories, ["current"]
 
 namespace :deploy do
   task :mod_group do
     on roles :app do
-      execute "chgrp -R #{fetch(:admin_group_name)} #{release_path} && chmod -R g+w #{release_path}"
-      info "Group of #{release_path} changed to #{fetch(:admin_group_name)} and writable bit set"
+      execute "chgrp -R #{admin_group_name} #{release_path} && chmod -R g+w #{release_path}"
+      info "Group of #{release_path} changed to #{admin_group_name} and writable bit set"
     end
   end
 
@@ -48,18 +48,28 @@ namespace :deploy do
   task :started do
     invoke "deploy:passenger_stop"
   end
-
+  
   task :finished do
     invoke "deploy:passenger_start"
   end
+  
+  # attempt to reboot server if reploy fails
+  after :failed, :passenger_start
 
   namespace :check do
     before :linked_files, :set_master_key do
       on roles(:app), in: :sequence, wait: 10 do
         master_key_remote_path = "#{shared_path}/config/master.key"
+        production_key_remote_path = "#{shared_path}/config/production.key"
+
         unless test("[ -f #{master_key_remote_path} ]")
           upload! "config/master.key", "#{master_key_remote_path}"
           execute "chgrp #{fetch(:mod_group)} #{master_key_remote_path} && chmod g+r #{master_key_remote_path}"
+        end  
+
+        unless test("[ -f #{production_key_remote_path} ]")
+          upload! "config/production.key", "#{production_key_remote_path}"
+          execute "chgrp #{fetch(:mod_group)} #{production_key_remote_path} && chmod g+r #{production_key_remote_path}"
         end
       end
     end
@@ -73,6 +83,7 @@ namespace :deploy do
     #     end
     #   end
     # end
+    
   end
 end
 
