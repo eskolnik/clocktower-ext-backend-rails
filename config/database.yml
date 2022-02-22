@@ -16,6 +16,7 @@ development:
   password: <%= Rails.application.credentials.database[:password] %>
   host: localhost
   database: clocktower_development
+  port: 5431
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -26,6 +27,7 @@ test:
   password: <%= Rails.application.credentials.database[:password] %>
   host: localhost
   database: clocktower_test
+  port: 5431
 
 production:
   <<: *default
