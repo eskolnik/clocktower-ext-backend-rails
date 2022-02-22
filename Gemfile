@@ -85,6 +85,7 @@ group :development do
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-asdf"
   gem "capistrano-passenger" 
+  gem "capistrano-postgresql", "~> 6.2"
 
   gem "solargraph"
 end

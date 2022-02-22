@@ -32,7 +32,6 @@ server "ec2-3-13-111-40.us-east-2.compute.amazonaws.com", user: "deploy", roles:
 # Feel free to add new variables to customise your setup.
 
 
-
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a
