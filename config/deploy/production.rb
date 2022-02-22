@@ -31,6 +31,8 @@ server "ec2-3-13-111-40.us-east-2.compute.amazonaws.com", user: "deploy", roles:
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
+set :pg_database, 'clocktower_production'
+
 
 # Custom SSH Options
 # ==================

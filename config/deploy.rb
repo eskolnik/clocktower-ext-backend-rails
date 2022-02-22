@@ -1,5 +1,5 @@
-# Required in order to access rails credentials
-require File.expand_path("./environment", __dir__)
+# # Required in order to access rails credentials
+# require File.expand_path("./environment", __dir__)
 
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.16.0"
@@ -11,7 +11,13 @@ set :branch, "deploy"
 
 set :deploy_to, "/home/deploy/#{fetch :application}"
 
+
+set :pg_without_sudo, false
+set :pg_username, Rails.application.credentials.database[:username]
 set :pg_password, Rails.application.credentials.database[:password]
+set :pg_host, 'localhost'
+set :pg_encoding, 'UTF-8'
+set :pg_pool, '100'
 
 append :linked_files, "config/master.key"
 append :linked_files, "config/credentials/production.key"

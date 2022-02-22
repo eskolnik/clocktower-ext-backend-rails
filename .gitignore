@@ -40,7 +40,7 @@
 # Ignore rsync folder
 rsync
 *.pem
-config/database.yml
+*/database.yml
 # /config/database.yml
 
 /config/credentials/development.key
