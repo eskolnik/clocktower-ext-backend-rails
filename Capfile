@@ -10,6 +10,9 @@ require "capistrano/rails"
 # Use asdf ruby version manager
 require "capistrano/asdf"
 
+# Put db in shared and symlink
+# require "capistrano/sqlite_reuse"
+
 # Use Passenger as our application server
 # require "capistrano/passenger"
 

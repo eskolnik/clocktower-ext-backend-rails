@@ -14,85 +14,92 @@ set :deploy_to, "/home/deploy/#{fetch :application}"
 append :linked_files, "config/master.key"
 append :linked_files, "config/credentials/production.key"
 
+append :linked_files, "config/database.yml"
+append :linked_files, "db/production.sqlite3"
+
 admin_group_name = "clocktower_admin"
 
-  namespace :deploy do
-    task :mod_group do
-      on roles :app do
-        execute "chgrp -R #{admin_group_name} #{release_path} && chmod -R g+w #{release_path}"
-        info "Group of #{release_path} changed to #{admin_group_name} and writable bit set"
-      end
-    end
-
-    task :passenger_stop do
-      on roles :app do
-        passenger_pid_path = "tmp/pids/passenger.8080.pid"
-
-        if test("[ -f #{current_path}/#{passenger_pid_path} ]")
-          begin
-            execute "cd #{current_path} && kill $(< #{passenger_pid_path})"
-            info "Passenger stopped in #{current_path}"
-          rescue
-            info "Passenger was not running"
-          end
-        else
-          info "Passenger was not running"
-        end
-      end
-    end
-
-    task :passenger_start do
-      on roles :app do
-        passenger_pid_path = "tmp/pids/passenger.8080.pid"
-
-        unless test("[ -f #{current_path}/#{passenger_pid_path} ]")
-          begin
-            execute "cd #{current_path} && passenger start"
-            info "Passenger restarted in #{current_path}"
-          rescue
-            info "Passenger was already running"
-          end
-        else
-          info "Passenger was already running"
-        end
-      end
-    end
-
-    task :published do
-      invoke "deploy:mod_group"
-    end
-
-    task :started do
-      invoke "deploy:passenger_stop"
-    end
-
-    task :finished do
-      invoke "deploy:passenger_start"
-    end
-
-    # attempt to reboot server if reploy fails
-    after :failed, :passenger_start
-
-    namespace :check do
-      before :linked_files, :set_master_key do
-        on roles(:app), in: :sequence, wait: 10 do
-          master_key_path = "#{shared_path}/config/master.key"
-          production_key_path = "#{shared_path}/config/credentials/production.key"
-
-          unless test("[ -f #{master_key_path} ]")
-            upload! "config/master.key", "#{master_key_path}"
-            execute "chgrp #{admin_group_name} #{master_key_path} && chmod g+r #{master_key_path}"
-          end
-
-          unless test("[ -f #{production_key_path} ]")
-            upload! "config/credentials/production.key", "#{production_key_path}"
-            execute "chgrp #{admin_group_name} #{production_key_path} && chmod g+r #{production_key_path}"
-          end
-        end
-      end
-
+namespace :deploy do
+  task :assign_group_permissions do
+    on roles :app do
+      execute "chgrp -R #{admin_group_name} #{release_path} && chmod -R g+rw #{release_path}"
+      info "Group of #{release_path} changed to #{admin_group_name} and writable bit set"
     end
   end
+
+  task :passenger_stop do
+    on roles :app do
+      passenger_pid_path = "tmp/pids/passenger.8080.pid"
+
+      if test("[ -f #{current_path}/#{passenger_pid_path} ]")
+        begin
+          execute "cd #{current_path} && kill $(< #{passenger_pid_path})"
+          info "Passenger stopped in #{current_path}"
+        rescue
+          info "Passenger was not running"
+        end
+      else
+        info "Passenger was not running"
+      end
+    end
+  end
+
+  task :passenger_start do
+    on roles :app do
+      passenger_pid_path = "tmp/pids/passenger.8080.pid"
+
+      unless test("[ -f #{current_path}/#{passenger_pid_path} ]")
+        begin
+          execute "cd #{current_path} && passenger start"
+          info "Passenger restarted in #{current_path}"
+        rescue
+          info "Passenger was already running"
+        end
+      else
+        info "Passenger was already running"
+      end
+    end
+  end
+
+  task :published do
+    invoke "deploy:assign_group_permissions"
+  end
+
+  task :started do
+    invoke "deploy:passenger_stop"
+  end
+
+  task :finished do
+    invoke "deploy:passenger_start"
+  end
+
+  # attempt to reboot server if reploy fails
+  after :failed, :passenger_start
+
+  namespace :check do
+    before :linked_files, :upload_credentials do
+      on roles(:app), in: :sequence, wait: 10 do
+        key_path = "#{shared_path}/config/credentials/#{fetch :rails_env}.key"
+
+        unless test("[ -f #{key_path} ]")
+          upload! "config/credentials/#{fetch :rails_env}.key", "#{key_path}"
+        end
+        execute "chgrp #{admin_group_name} #{key_path} && chmod g+r #{key_path}"
+      end
+    end
+
+    before :linked_files, :upload_db_config do
+      on roles(:app), in: :sequence, wait: 10 do
+        config_path = "#{shared_path}/config/database.yml"
+
+        unless test("[ -f #{config_path} ]")
+          upload! "config/database.yml", "#{config_path}"
+        end
+        execute "chgrp #{admin_group_name} #{config_path} && chmod g+r #{config_path}"
+      end
+    end
+  end
+end
 
 # ASDF installed in opt for global access
 set :asdf_custom_path, "/opt/.asdf"  # only needed if not '~/.asdf'
@@ -112,9 +119,6 @@ set :asdf_custom_path, "/opt/.asdf"  # only needed if not '~/.asdf'
 
 # Default value for :pty is false
 set :pty, true
-
-# Default value for :linked_files is []
-# append :linked_files, "config/database.yml"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
