@@ -11,10 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2021_12_25_231920) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "broadcasters", force: :cascade do |t|
     t.integer "channel_id"
     t.string "secret_key"
@@ -23,7 +19,7 @@ ActiveRecord::Schema.define(version: 2021_12_25_231920) do
   end
 
   create_table "game_sessions", force: :cascade do |t|
-    t.bigint "broadcaster_id"
+    t.integer "broadcaster_id"
     t.string "secret_key"
     t.string "session_id"
     t.string "player_id"
@@ -34,7 +30,7 @@ ActiveRecord::Schema.define(version: 2021_12_25_231920) do
   end
 
   create_table "grimoires", force: :cascade do |t|
-    t.bigint "game_session_id"
+    t.integer "game_session_id"
     t.string "player_id"
     t.boolean "is_host"
     t.text "players"
@@ -46,5 +42,4 @@ ActiveRecord::Schema.define(version: 2021_12_25_231920) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["game_session_id"], name: "index_grimoires_on_game_session_id"
   end
-
 end

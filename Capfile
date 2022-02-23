@@ -10,10 +10,6 @@ require "capistrano/rails"
 # Use asdf ruby version manager
 require "capistrano/asdf"
 
-# Include postgres tasks
-require "capistrano/postgresql"
-
-
 # Use Passenger as our application server
 # require "capistrano/passenger"
 

@@ -41,9 +41,6 @@
 rsync
 *.pem
 /config/database.yml
+# /config/database.yml
 
-/config/credentials/development.key
-
-/config/credentials/default.key
-
-/config/credentials/production.key
+/config/credentials/*.key
