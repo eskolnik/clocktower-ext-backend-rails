@@ -30,8 +30,19 @@ and publish updates to each of them.
 Upsert a session record to assign a broadcaster to a specific session and player.
 The `isActive` flag marks whether the session should be sent to the viewers (when false, overlay should show nothing).
 
+# Development
+`passenger start` 
+`passenger stop`
 
+# Deploy
 
+`cap production deploy`
+
+With backtrace:
+`cap production deploy --trace`
+
+Dry run:
+`cap production deploy -n`
 
 ## Acknowledgements and Copyrights
 * [Blood on the Clocktower](https://bloodontheclocktower.com/) is a trademark of Steven Medway and [The Pandemonium Institute](https://www.thepandemoniuminstitute.com/)
