@@ -13,8 +13,10 @@ set :deploy_to, "/home/deploy/#{fetch :application}"
 
 
 set :pg_without_sudo, false
-set :pg_username, Rails.application.credentials.database[:username]
-set :pg_password, Rails.application.credentials.database[:password]
+# set :pg_username, Rails.application.credentials.database[:username]
+set :pg_username, "cap_test_username"
+# set :pg_password, Rails.application.credentials.database[:password]
+set :pg_password, "password"
 set :pg_host, 'localhost'
 set :pg_encoding, 'UTF-8'
 set :pg_pool, '100'
@@ -41,7 +43,7 @@ admin_group_name = "clocktower_admin"
           begin
             # execute "cd #{current_path} && passenger stop"
             # execute "cd #{current_path} && kill $(passenger status | awk -F'Standalone is running on PID |,' '{print $2}')"
-            execute "cd #{current_path} && [ -f #{passenger_pid_path} ] && kill $(< #{passenger_pid_path})"
+            execute "cd #{current_path} && kill $(< #{passenger_pid_path})"
             info "Passenger stopped in #{current_path}"
           rescue
             info "Passenger was not running"
@@ -58,7 +60,7 @@ admin_group_name = "clocktower_admin"
 
         unless test("[ -f #{current_path}/#{passenger_pid_path} ]")
           begin
-            execute "cd #{current_path} && [ -f #{passenger_pid_path} ] || passenger start"
+            execute "cd #{current_path} && passenger start"
             info "Passenger restarted in #{current_path}"
           rescue
             info "Passenger was already running"
