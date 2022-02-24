@@ -31,8 +31,7 @@ Upsert a session record to assign a broadcaster to a specific session and player
 The `isActive` flag marks whether the session should be sent to the viewers (when false, overlay should show nothing).
 
 # Development
-`passenger start` 
-`passenger stop`
+`rails s` 
 
 # Deploy
 

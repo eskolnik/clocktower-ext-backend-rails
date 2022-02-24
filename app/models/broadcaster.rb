@@ -1,4 +1,5 @@
 # the Ruby JWT library doesn't seem up to the task, so we're rolling our own.
+# In particular, it has some strange and hard to override defaults wrt key ordering
 require "json"
 require "base64"
 require "openssl"

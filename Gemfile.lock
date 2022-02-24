@@ -149,9 +149,6 @@ GEM
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
-    passenger (6.0.12)
-      rack
-      rake (>= 0.8.1)
     public_suffix (4.0.6)
     puma (5.5.2)
       nio4r (~> 2.0)
@@ -306,7 +303,6 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   jwt
-  passenger (>= 5.0.25)
   puma (~> 5.0)
   rack-cors
   rails (~> 7.0.0)

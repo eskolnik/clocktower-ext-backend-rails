@@ -10,6 +10,8 @@ class BroadcastersController < ApplicationController
 
   # GET /broadcasters/:channel_id
   def show
+    puts request.authorization
+
     @broadcaster = Broadcaster.find_by(channel_id: params[:id])
     if (!@broadcaster)
       return false
