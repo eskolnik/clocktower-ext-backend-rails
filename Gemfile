@@ -57,9 +57,6 @@ gem "bootsnap", require: false
 # handle CORS requests
 gem "rack-cors"
 
-# Use JSON Web Tokens
-gem "jwt"
-
 # HTTP library
 gem "faraday"
 

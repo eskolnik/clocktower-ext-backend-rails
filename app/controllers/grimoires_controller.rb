@@ -10,6 +10,15 @@ class GrimoiresController < ApplicationController
 
   # GET /grimoires/:channel_id
   def show
+    token_data = jwt_auth
+
+    cid = token_data["channel_id"]
+
+    if cid != params[:id]
+      render :json => { status: "error" }
+      return
+    end
+      
     broadcaster = Broadcaster.find_by(channel_id: params[:id])
 
     if (!broadcaster)

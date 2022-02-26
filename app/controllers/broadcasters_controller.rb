@@ -1,5 +1,3 @@
-require "jwt"
-
 class BroadcastersController < ApplicationController
   before_action :restrict_to_development, :only => [:index]
 
@@ -10,17 +8,35 @@ class BroadcastersController < ApplicationController
 
   # GET /broadcasters/:channel_id
   def show
-    puts request.authorization
+    token_data = jwt_auth
 
+    cid = token_data["channel_id"]
+
+    if cid != params[:id]
+      render :json => { status: "error" }
+      return
+    end
+      
     @broadcaster = Broadcaster.find_by(channel_id: params[:id])
     if (!@broadcaster)
-      return false
+      render :json => { status: "error" }
+      return
     end
+
     render :json => @broadcaster&.json_view
   end
 
   # POST /broadcasters/
   def create
+    token_data = jwt_auth
+
+    cid = token_data["channel_id"]
+
+    if cid != params[:id]
+      render :json => { status: "error" }
+      return
+    end
+      
     broadcaster = Broadcaster.find_by(channel_id: params[:channel_id]) || Broadcaster.new
 
     broadcaster.channel_id = params[:channel_id]

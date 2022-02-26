@@ -41,5 +41,6 @@
 rsync
 *.pem
 # /config/database.yml
+jwt-standalone
 
 /config/credentials/*.key

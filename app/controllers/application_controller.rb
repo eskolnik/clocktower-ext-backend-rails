@@ -1,5 +1,3 @@
-require "jwt"
-
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
@@ -30,10 +28,29 @@ class ApplicationController < ActionController::Base
       raise Exception.new "Invalid Authorization Token"
     end
 
+    token = auth[1]
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
 
-    JWT.decode auth[1], secret, true, { algorithm: algorithm }
+    # Use custom JS JWT library because Ruby's just doesn't work
+    verify = JSON.parse(`node app/javascript/verify_jwt.js #{token} #{secret}`)
+
+    return verify
+  end
+
+  def jwt_auth
+    begin
+      token = decoded_token
+    rescue
+      render :json => { status: "error" }
+      return
+    end
+
+    if !token["valid"]
+      render :json => { status: "error" }
+      return
+    end
+    return token
   end
 
   def sign(payload)
