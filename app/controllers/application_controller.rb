@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
     algorithm = Rails.application.credentials.jwt_algorithm
 
     logger.info "TOKEN RECEIVED: #{token}"
+    logger.info "SECRET #{secret}"
 
     # Use custom JS JWT library because Ruby's just doesn't work
     verify = JSON.parse(`node app/javascript/verify_jwt.js #{token} #{secret}`)
@@ -44,13 +45,16 @@ class ApplicationController < ActionController::Base
   def jwt_auth
     begin
       token = decoded_token
+      logger.info "decoded #{token}"
+
     rescue
-      render :json => { error: "error", status: 400 }
+      logger.error "failed to decode #{token}"
+      # render :json => { error: "error", status: 400 }
       return false
     end
 
     if !token["valid"]
-      render :json => { error: "error", status: 400 }
+      # render :json => { error: "error", status: 400 }
       return false
     end
     return token["result"]
