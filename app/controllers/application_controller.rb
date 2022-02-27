@@ -19,13 +19,14 @@ class ApplicationController < ActionController::Base
 
   def decoded_token
     if !auth_header
-      raise Exception.new "Invalid Authorization Token"
+      raise "Invalid Authorization Token"
     end
+    
     auth = auth_header.split(" ")
 
     # Header must be prefixed with "Bearer"
     if auth[0] != "Bearer"
-      raise Exception.new "Invalid Authorization Token"
+      raise "Invalid Authorization Token"
     end
 
     token = auth[1]
@@ -42,15 +43,15 @@ class ApplicationController < ActionController::Base
     begin
       token = decoded_token
     rescue
-      render :json => { status: "error" }
+      render :json => { error: "error", status: 400 }
       return
     end
 
     if !token["valid"]
-      render :json => { status: "error" }
+      render :json => { error: "error", status: 400 }
       return
     end
-    return token
+    return token["result"]
   end
 
   def sign(payload)
