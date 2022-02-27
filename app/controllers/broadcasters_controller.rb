@@ -10,10 +10,16 @@ class BroadcastersController < ApplicationController
   def show
     token_data = jwt_auth
 
+    unless token_data
+      render :json => { error: "Invalid Auth token", status: 400 }
+      return
+    end
+
+
     cid = token_data["channel_id"]
 
     if cid != params[:id]
-      render :json => { status: "error" }
+      render :json => { error: "error", status: 400 }
       return
     end
       
@@ -30,10 +36,15 @@ class BroadcastersController < ApplicationController
   def create
     token_data = jwt_auth
 
+    unless token_data
+      render :json => { error: "Invalid Auth Token", status: 400 }
+      return
+    end
+
     cid = token_data["channel_id"]
 
     if cid != params[:id]
-      render :json => { status: "error" }
+      render :json => { error: "error", status: 400 }
       return
     end
       

@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     if !auth_header
       raise "Invalid Authorization Token"
     end
-    
+
     auth = auth_header.split(" ")
 
     # Header must be prefixed with "Bearer"
@@ -33,9 +33,11 @@ class ApplicationController < ActionController::Base
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
 
+    logger.info "TOKEN RECEIVED: #{token}"
+
     # Use custom JS JWT library because Ruby's just doesn't work
     verify = JSON.parse(`node app/javascript/verify_jwt.js #{token} #{secret}`)
-
+    logger.info "TOKEN VERIFIED: #{verify.to_s}"
     return verify
   end
 
@@ -44,12 +46,12 @@ class ApplicationController < ActionController::Base
       token = decoded_token
     rescue
       render :json => { error: "error", status: 400 }
-      return
+      return false
     end
 
     if !token["valid"]
       render :json => { error: "error", status: 400 }
-      return
+      return false
     end
     return token["result"]
   end

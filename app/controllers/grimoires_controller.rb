@@ -12,10 +12,15 @@ class GrimoiresController < ApplicationController
   def show
     token_data = jwt_auth
 
+    unless token_data
+      render :json => { error: "Invalid Auth Token", status: 400 }
+      return
+    end
+
     cid = token_data["channel_id"]
 
     if cid != params[:id]
-      render :json => { status: "error" }
+      render :json => { status: "error", status: 400 }
       return
     end
       
