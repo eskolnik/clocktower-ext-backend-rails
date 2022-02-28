@@ -37,8 +37,9 @@ class ApplicationController < ActionController::Base
     logger.info "SECRET #{secret}"
 
     # Use custom JS JWT library because Ruby's just doesn't work
-    verify = JSON.parse(`node app/javascript/verify_jwt.js #{token} #{secret}`)
-    logger.info "TOKEN VERIFIED: #{verify.to_s}"
+    token_json = `node app/javascript/verify_jwt.js #{token} #{secret}`
+    verify = JSON.parse(token_json)
+    logger.info "TOKEN VERIFIED: #{token_json}"
     return verify
   end
 
@@ -50,7 +51,7 @@ class ApplicationController < ActionController::Base
     rescue
       logger.error "failed to decode #{token}"
       # render :json => { error: "error", status: 400 }
-      return false
+      return false 
     end
 
     if !token["valid"]
