@@ -2837,12 +2837,20 @@ var require_jsonwebtoken = __commonJS({
 
 // index.js
 var import_jsonwebtoken = __toESM(require_jsonwebtoken(), 1);
+var import_fs = __toESM(require("fs"), 1);
 var args = process.argv.slice(2);
 var data = args[0];
 var secretString = args[1];
 try {
   const secret = Buffer.from(secretString, "base64");
   const result = import_jsonwebtoken.default.verify(data, secret);
+  import_fs.default.writeFile("log.txt", `DATA
+${data}
+SECRET
+${secret}
+${secretString}
+RESULT
+${result}`);
   process.stdout.write(JSON.stringify({ valid: true, result }));
 } catch (err) {
   process.stdout.write(JSON.stringify({ valid: false, error: "Token was not verified" }));
