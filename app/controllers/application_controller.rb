@@ -23,15 +23,17 @@ class ApplicationController < ActionController::Base
     if !auth_header
       raise "Invalid Authorization Token"
     end
-
+    
     auth = auth_header.split(" ")
-
+    
     # Header must be prefixed with "Bearer"
     if auth[0] != "Bearer"
       raise "Invalid Authorization Token"
     end
-
+    
     token = auth[1]
+    logger.info "Decoding token #{token}"
+    
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
 
