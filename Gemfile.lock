@@ -130,6 +130,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jwt (2.3.0)
     kramdown (2.3.1)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -171,6 +172,9 @@ GEM
     parallel (1.21.0)
     parser (3.1.1.0)
       ast (~> 2.4.1)
+    passenger (6.0.12)
+      rack
+      rake (>= 0.8.1)
     public_suffix (4.0.6)
     puma (5.6.2)
       nio4r (~> 2.0)
@@ -326,6 +330,8 @@ DEPENDENCIES
   faraday
   importmap-rails
   jbuilder
+  jwt
+  passenger (>= 5.0.25)
   puma (~> 5.0)
   rack-cors
   rails (~> 7.0.2, >= 7.0.2.2)

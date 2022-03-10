@@ -165,8 +165,8 @@ var require_param_bytes_for_alg = __commonJS({
   "node_modules/ecdsa-sig-formatter/src/param-bytes-for-alg.js"(exports, module2) {
     "use strict";
     function getParamSize(keySize) {
-      var result = (keySize / 8 | 0) + (keySize % 8 === 0 ? 0 : 1);
-      return result;
+      var result2 = (keySize / 8 | 0) + (keySize % 8 === 0 ? 0 : 1);
+      return result2;
     }
     var paramBytesForAlg = {
       ES256: getParamSize(256),
@@ -423,17 +423,17 @@ var require_jwa = __commonJS({
       return thing;
     }
     function createHmacSigner(bits) {
-      return function sign(thing, secret) {
-        checkIsSecretKey(secret);
+      return function sign(thing, secret2) {
+        checkIsSecretKey(secret2);
         thing = normalizeInput(thing);
-        var hmac = crypto.createHmac("sha" + bits, secret);
+        var hmac = crypto.createHmac("sha" + bits, secret2);
         var sig = (hmac.update(thing), hmac.digest("base64"));
         return fromBase64(sig);
       };
     }
     function createHmacVerifier(bits) {
-      return function verify(thing, signature, secret) {
-        var computedSig = createHmacSigner(bits)(thing, secret);
+      return function verify(thing, signature, secret2) {
+        var computedSig = createHmacSigner(bits)(thing, secret2);
         return bufferEqual(Buffer2.from(signature), Buffer2.from(computedSig));
       };
     }
@@ -495,8 +495,8 @@ var require_jwa = __commonJS({
       var inner = createKeyVerifier(bits);
       return function verify(thing, signature, publicKey) {
         signature = formatEcdsa.joseToDer(signature, "ES" + bits).toString("base64");
-        var result = inner(thing, signature, publicKey);
-        return result;
+        var result2 = inner(thing, signature, publicKey);
+        return result2;
       };
     }
     function createNoneSigner() {
@@ -580,8 +580,8 @@ var require_sign_stream = __commonJS({
       return util.format("%s.%s", securedInput, signature);
     }
     function SignStream(opts) {
-      var secret = opts.secret || opts.privateKey || opts.key;
-      var secretStream = new DataStream(secret);
+      var secret2 = opts.secret || opts.privateKey || opts.key;
+      var secretStream = new DataStream(secret2);
       this.readable = true;
       this.header = opts.header;
       this.encoding = opts.encoding;
@@ -2233,11 +2233,11 @@ var require_lodash = __commonJS({
     var reIsUint = /^(?:0|[1-9]\d*)$/;
     var freeParseInt = parseInt;
     function arrayMap(array, iteratee) {
-      var index = -1, length = array ? array.length : 0, result = Array(length);
+      var index = -1, length = array ? array.length : 0, result2 = Array(length);
       while (++index < length) {
-        result[index] = iteratee(array[index], index, array);
+        result2[index] = iteratee(array[index], index, array);
       }
-      return result;
+      return result2;
     }
     function baseFindIndex(array, predicate, fromIndex, fromRight) {
       var length = array.length, index = fromIndex + (fromRight ? 1 : -1);
@@ -2264,11 +2264,11 @@ var require_lodash = __commonJS({
       return value !== value;
     }
     function baseTimes(n, iteratee) {
-      var index = -1, result = Array(n);
+      var index = -1, result2 = Array(n);
       while (++index < n) {
-        result[index] = iteratee(index);
+        result2[index] = iteratee(index);
       }
-      return result;
+      return result2;
     }
     function baseValues(object, props) {
       return arrayMap(props, function(key) {
@@ -2287,26 +2287,26 @@ var require_lodash = __commonJS({
     var nativeKeys = overArg(Object.keys, Object);
     var nativeMax = Math.max;
     function arrayLikeKeys(value, inherited) {
-      var result = isArray(value) || isArguments(value) ? baseTimes(value.length, String) : [];
-      var length = result.length, skipIndexes = !!length;
+      var result2 = isArray(value) || isArguments(value) ? baseTimes(value.length, String) : [];
+      var length = result2.length, skipIndexes = !!length;
       for (var key in value) {
         if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (key == "length" || isIndex(key, length)))) {
-          result.push(key);
+          result2.push(key);
         }
       }
-      return result;
+      return result2;
     }
     function baseKeys(object) {
       if (!isPrototype(object)) {
         return nativeKeys(object);
       }
-      var result = [];
+      var result2 = [];
       for (var key in Object(object)) {
         if (hasOwnProperty.call(object, key) && key != "constructor") {
-          result.push(key);
+          result2.push(key);
         }
       }
-      return result;
+      return result2;
     }
     function isIndex(value, length) {
       length = length == null ? MAX_SAFE_INTEGER : length;
@@ -2367,8 +2367,8 @@ var require_lodash = __commonJS({
       return value === value ? value : 0;
     }
     function toInteger(value) {
-      var result = toFinite(value), remainder = result % 1;
-      return result === result ? remainder ? result - remainder : result : 0;
+      var result2 = toFinite(value), remainder = result2 % 1;
+      return result2 === result2 ? remainder ? result2 - remainder : result2 : 0;
     }
     function toNumber(value) {
       if (typeof value == "number") {
@@ -2453,8 +2453,8 @@ var require_lodash3 = __commonJS({
       return value === value ? value : 0;
     }
     function toInteger(value) {
-      var result = toFinite(value), remainder = result % 1;
-      return result === result ? remainder ? result - remainder : result : 0;
+      var result2 = toFinite(value), remainder = result2 % 1;
+      return result2 === result2 ? remainder ? result2 - remainder : result2 : 0;
     }
     function toNumber(value) {
       if (typeof value == "number") {
@@ -2499,14 +2499,14 @@ var require_lodash5 = __commonJS({
   "node_modules/lodash.isplainobject/index.js"(exports, module2) {
     var objectTag = "[object Object]";
     function isHostObject(value) {
-      var result = false;
+      var result2 = false;
       if (value != null && typeof value.toString != "function") {
         try {
-          result = !!(value + "");
+          result2 = !!(value + "");
         } catch (e) {
         }
       }
-      return result;
+      return result2;
     }
     function overArg(func, transform) {
       return function(arg) {
@@ -2571,19 +2571,19 @@ var require_lodash7 = __commonJS({
     var objectProto = Object.prototype;
     var objectToString = objectProto.toString;
     function before(n, func) {
-      var result;
+      var result2;
       if (typeof func != "function") {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       n = toInteger(n);
       return function() {
         if (--n > 0) {
-          result = func.apply(this, arguments);
+          result2 = func.apply(this, arguments);
         }
         if (n <= 1) {
           func = void 0;
         }
-        return result;
+        return result2;
       };
     }
     function once(func) {
@@ -2611,8 +2611,8 @@ var require_lodash7 = __commonJS({
       return value === value ? value : 0;
     }
     function toInteger(value) {
-      var result = toFinite(value), remainder = result % 1;
-      return result === result ? remainder ? result - remainder : result : 0;
+      var result2 = toFinite(value), remainder = result2 % 1;
+      return result2 === result2 ? remainder ? result2 - remainder : result2 : 0;
     }
     function toNumber(value) {
       if (typeof value == "number") {
@@ -2837,22 +2837,16 @@ var require_jsonwebtoken = __commonJS({
 
 // index.js
 var import_jsonwebtoken = __toESM(require_jsonwebtoken(), 1);
-var import_fs = __toESM(require("fs"), 1);
 var args = process.argv.slice(2);
 var data = args[0];
 var secretString = args[1];
+var secret;
+var result;
 try {
-  const secret = Buffer.from(secretString, "base64");
-  const result = import_jsonwebtoken.default.verify(data, secret);
-  import_fs.default.writeFile("log.txt", `DATA
-${data}
-SECRET
-${secret}
-${secretString}
-RESULT
-${result}`);
+  secret = Buffer.from(secretString, "base64");
+  result = import_jsonwebtoken.default.verify(data, secret);
   process.stdout.write(JSON.stringify({ valid: true, result }));
 } catch (err) {
-  process.stdout.write(JSON.stringify({ valid: false, error: "Token was not verified" }));
+  process.stdout.write(JSON.stringify({ valid: false, error: "Not Verified" }));
 }
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */

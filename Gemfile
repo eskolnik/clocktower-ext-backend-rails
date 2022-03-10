@@ -12,12 +12,6 @@ gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", "~> 1.4"
 
-# Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 5.0"
-
-# Use Passenger webserver
-# gem "passenger", ">= 5.0.25", require: "phusion_passenger/rack_handler"
-
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
 
@@ -48,6 +42,8 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+gem "jwt"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
@@ -60,11 +56,20 @@ gem "rack-cors"
 # HTTP library
 gem "faraday"
 
+group :production do
+
+  # Use Passenger webserver
+  gem "passenger", ">= 5.0.25", require: "phusion_passenger/rack_handler"
+end
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 
   gem "rspec-rails"
+
+  # Use the Puma web server [https://github.com/puma/puma]
+  gem "puma", "~> 5.0"
 end
 
 group :development do
@@ -81,7 +86,7 @@ group :development do
   gem "capistrano", "~> 3.16", require: false
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-asdf"
-  gem "capistrano-passenger" 
+  gem "capistrano-passenger"
 
   gem "solargraph"
 end

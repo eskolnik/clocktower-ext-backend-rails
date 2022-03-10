@@ -1,3 +1,5 @@
+require "jwt"
+
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
@@ -33,29 +35,24 @@ class ApplicationController < ActionController::Base
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
 
-    logger.info "TOKEN RECEIVED: #{token}"
-    logger.info "SECRET #{secret}"
-
     # Use custom JS JWT library because Ruby's just doesn't work
     token_json = `node app/javascript/verify_jwt.js #{token} #{secret}`
     verify = JSON.parse(token_json)
-    logger.info "TOKEN VERIFIED: #{token_json}"
+    
     return verify
   end
 
   def jwt_auth
     begin
       token = decoded_token
-      logger.info "decoded #{token}"
-
     rescue
-      logger.error "failed to decode #{token}"
-      # render :json => { error: "error", status: 400 }
+      logger.error "Failed to decode token: #{token}"
+  
       return false 
     end
 
     if !token["valid"]
-      # render :json => { error: "error", status: 400 }
+  
       return false
     end
     return token["result"]
