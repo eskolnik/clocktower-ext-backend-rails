@@ -38,6 +38,10 @@ class ApplicationController < ActionController::Base
     # Use custom JS JWT library because Ruby's just doesn't work
     token_json = `node app/javascript/verify_jwt.js #{token} #{secret}`
     verify = JSON.parse(token_json)
+
+    if !verify["valid"]
+      logger.error "Invalid token: #{token}"
+    end
     
     return verify
   end
@@ -52,7 +56,6 @@ class ApplicationController < ActionController::Base
     end
 
     if !token["valid"]
-  
       return false
     end
     return token["result"]

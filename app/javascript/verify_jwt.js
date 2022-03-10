@@ -2847,6 +2847,6 @@ try {
   result = import_jsonwebtoken.default.verify(data, secret);
   process.stdout.write(JSON.stringify({ valid: true, result }));
 } catch (err) {
-  process.stdout.write(JSON.stringify({ valid: false, error: "Not Verified" }));
+  process.stdout.write(JSON.stringify({ valid: false, error: err }));
 }
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
