@@ -2837,6 +2837,7 @@ var require_jsonwebtoken = __commonJS({
 
 // index.js
 var import_jsonwebtoken = __toESM(require_jsonwebtoken(), 1);
+var import_fs = __toESM(require("fs"), 1);
 var args = process.argv.slice(2);
 var data = args[0];
 var secretString = args[1];
@@ -2845,8 +2846,24 @@ var result;
 try {
   secret = Buffer.from(secretString, "base64");
   result = import_jsonwebtoken.default.verify(data, secret);
+  import_fs.default.writeFileSync("log.txt", `DATA
+${data}
+SECRET
+${secret}
+${secretString}
+RESULT
+${result}`);
   process.stdout.write(JSON.stringify({ valid: true, result }));
 } catch (err) {
+  import_fs.default.writeFileSync("log.txt", `DATA
+${data}
+SECRET
+${secret}
+${secretString}
+RESULT
+${result}
+ERROR
+${err}`);
   process.stdout.write(JSON.stringify({ valid: false, error: err }));
 }
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
