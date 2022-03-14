@@ -38,6 +38,8 @@ class ApplicationController < ActionController::Base
     algorithm = Rails.application.credentials.jwt_algorithm
 
     # Use custom JS JWT library because Ruby's just doesn't work
+    logger.info "node app/javascript/verify_jwt.js #{token} #{secret}"
+
     token_json = `node app/javascript/verify_jwt.js #{token} #{secret}`
     verify = JSON.parse(token_json)
 
