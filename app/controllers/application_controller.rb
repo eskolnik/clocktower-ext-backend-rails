@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     # Use custom JS JWT library because Ruby's just doesn't work
     logger.info "node app/javascript/verify_jwt.js #{token} #{secret}"
     logger.info "RUNNING COMMAND AS #{`whoami`}"
-    logger.info "can I use node? #{`node -v`}"
+    logger.info "can I use node? #{`which node`}"
 
     token_json = `node app/javascript/verify_jwt.js #{token} #{secret}`
     verify = JSON.parse(token_json)
