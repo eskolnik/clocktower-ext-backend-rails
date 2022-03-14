@@ -37,12 +37,7 @@ class ApplicationController < ActionController::Base
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
 
-    # Use custom JS JWT library because Ruby's just doesn't work
-    logger.info "node app/javascript/verify_jwt.js #{token} #{secret}"
-    logger.info "RUNNING COMMAND AS #{`whoami`}"
-    logger.info "can I use node? #{`which node`}"
-
-    token_json = `node app/javascript/verify_jwt.js #{token} #{secret}`
+    token_json = `/home/deploy/.nvm/versions/node/v16.2.0/bin/node app/javascript/verify_jwt.js #{token} #{secret}`
     verify = JSON.parse(token_json)
 
     if !verify["valid"]
