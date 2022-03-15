@@ -9,6 +9,16 @@ class ApplicationController < ActionController::Base
   # Credit to jpbalarini https://gist.github.com/jpbalarini/54a1aa22ebb261af9d8bfd9a24e811f0
   before_action :cors_set_access_control_headers
 
+  before_action :log_headers
+
+  def log_headers
+    request.headers.env.reject { |key| key.to_s.include?('.') }
+    request.headers.env.select {|k, v|   k.match("^HTTP.*|^CONTENT.*|^REMOTE.*|^REQUEST.*|^AUTHORIZATION.*|^SCRIPT.*|^SERVER.*") }
+
+    logger.info "HEADERS\n#{headers}"
+    logger.info "BASEURL\n#{request.base_url}"
+  end
+
   def cors_preflight_check
     return unless request.method == "OPTIONS"
     cors_set_access_control_headers
@@ -23,19 +33,17 @@ class ApplicationController < ActionController::Base
     if !auth_header
       raise "Invalid Authorization Token"
     end
-    
+
     auth = auth_header.split(" ")
-    
+
     # Header must be prefixed with "Bearer"
     if auth[0] != "Bearer"
       raise "Invalid Authorization Token"
     end
-    
+
     token = auth[1]
     # logger.info "Decoding token #{token}"
-    logger.info "HEADERS\n#{request.headers}"
-    logger.info "BASEURL\n#{request.base_url}"
-    
+
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
 
@@ -43,7 +51,7 @@ class ApplicationController < ActionController::Base
       token_json = `/home/deploy/.nvm/versions/node/v16.2.0/bin/node app/javascript/verify_jwt.js #{token} #{secret}`
     rescue
       logger.error "Could not validate token #{token}"
-      return {valid: false}
+      return { valid: false }
     end
 
     verify = JSON.parse(token_json)
@@ -51,7 +59,7 @@ class ApplicationController < ActionController::Base
     if !verify["valid"]
       logger.error "Invalid token: #{token}"
     end
-    
+
     return verify
   end
 
@@ -60,8 +68,8 @@ class ApplicationController < ActionController::Base
       token = decoded_token
     rescue
       logger.error "Failed to decode token: #{token}"
-  
-      return false 
+
+      return false
     end
 
     if !token["valid"]
