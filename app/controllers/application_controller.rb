@@ -32,12 +32,20 @@ class ApplicationController < ActionController::Base
     end
     
     token = auth[1]
-    logger.info "Decoding token #{token}"
+    # logger.info "Decoding token #{token}"
+    logger.info "HEADERS\n#{request.headers}"
+    logger.info "BASEURL\n#{request.base_url}"
     
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
 
-    token_json = `/home/deploy/.nvm/versions/node/v16.2.0/bin/node app/javascript/verify_jwt.js #{token} #{secret}`
+    begin
+      token_json = `/home/deploy/.nvm/versions/node/v16.2.0/bin/node app/javascript/verify_jwt.js #{token} #{secret}`
+    rescue
+      logger.error "Could not validate token #{token}"
+      return {valid: false}
+    end
+
     verify = JSON.parse(token_json)
 
     if !verify["valid"]
@@ -59,6 +67,7 @@ class ApplicationController < ActionController::Base
     if !token["valid"]
       return false
     end
+
     return token["result"]
   end
 
