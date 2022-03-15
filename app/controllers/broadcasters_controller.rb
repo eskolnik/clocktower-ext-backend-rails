@@ -1,4 +1,6 @@
 class BroadcastersController < ApplicationController
+  protect_from_forgery with: :null_session
+
   before_action :restrict_to_development, :only => [:index]
 
   def index

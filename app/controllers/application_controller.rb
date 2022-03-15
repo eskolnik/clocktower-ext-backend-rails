@@ -12,10 +12,11 @@ class ApplicationController < ActionController::Base
   before_action :log_headers
 
   def log_headers
-    request.headers.env.reject { |key| key.to_s.include?('.') }
-    request.headers.env.select {|k, v|   k.match("^HTTP.*|^CONTENT.*|^REMOTE.*|^REQUEST.*|^AUTHORIZATION.*|^SCRIPT.*|^SERVER.*") }
+    headers1 = request.headers.env.reject { |key| key.to_s.include?('.') }
+    headers2 = request.headers.env.select {|k, v|   k.match("^HTTP.*|^CONTENT.*|^REMOTE.*|^REQUEST.*|^AUTHORIZATION.*|^SCRIPT.*|^SERVER.*") }
 
-    logger.info "HEADERS\n#{headers}"
+    logger.info "HEADERS[1]\n#{headers1}"
+    logger.info "HEADERS[2]\n#{headers2}"
     logger.info "BASEURL\n#{request.base_url}"
   end
 
