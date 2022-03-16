@@ -1,6 +1,4 @@
 class BroadcastersController < ApplicationController
-  # skip_before_action :verify_authenticity_token
-
   before_action :restrict_to_development, :only => [:index]
 
   def index
@@ -16,7 +14,6 @@ class BroadcastersController < ApplicationController
       render :json => { error: "Invalid Auth token", status: 400 }
       return
     end
-
 
     cid = token_data["channel_id"]
 
@@ -45,7 +42,8 @@ class BroadcastersController < ApplicationController
 
     cid = token_data["channel_id"]
 
-    if cid != params[:id]
+    if cid != params[:channel_id]
+      logger.error "Channel ID mismatch: PARAM=#{params[:id]} TOKEN=#{cid}"
       render :json => { error: "error", status: 400 }
       return
     end
