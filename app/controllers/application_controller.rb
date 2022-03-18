@@ -9,17 +9,6 @@ class ApplicationController < ActionController::Base
   # Credit to jpbalarini https://gist.github.com/jpbalarini/54a1aa22ebb261af9d8bfd9a24e811f0
   before_action :cors_set_access_control_headers
 
-  before_action :log_headers
-
-  def log_headers
-    headers1 = request.headers.env.reject { |key| key.to_s.include?('.') }
-    headers2 = request.headers.env.select {|k, v|   k.match("^HTTP.*|^CONTENT.*|^REMOTE.*|^REQUEST.*|^AUTHORIZATION.*|^SCRIPT.*|^SERVER.*") }
-
-    logger.info "HEADERS[1]\n#{headers1}"
-    logger.info "HEADERS[2]\n#{headers2}"
-    logger.info "BASEURL\n#{request.base_url}"
-  end
-
   def cors_preflight_check
     return unless request.method == "OPTIONS"
     cors_set_access_control_headers
@@ -28,6 +17,11 @@ class ApplicationController < ActionController::Base
 
   def auth_header
     request.headers["Authorization"]
+  end
+
+  # Clean user input before passing to the node JWT verifier
+  def sanitize_token token 
+    token.tr('^A-Za-z0-9', '')
   end
 
   def decoded_token
@@ -42,7 +36,8 @@ class ApplicationController < ActionController::Base
       raise "Invalid Authorization Token"
     end
 
-    token = auth[1]
+    token = sanitize_token(auth[1])
+
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
     node_path = Rails.application.credentials.node_path
