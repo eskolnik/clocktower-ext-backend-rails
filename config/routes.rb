@@ -12,5 +12,7 @@ Rails.application.routes.draw do
   get "sessions", to: "game_sessions#show"
   post "sessions", to: "game_sessions#create"
 
+  get "/setup", to: "home#index"
+
   root "home#index"
 end
