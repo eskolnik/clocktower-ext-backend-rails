@@ -36,7 +36,8 @@ class ApplicationController < ActionController::Base
       raise "Invalid Authorization Token"
     end
 
-    token = sanitize_token(auth[1])
+    # token = sanitize_token(auth[1])
+    token = auth[1]
 
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
