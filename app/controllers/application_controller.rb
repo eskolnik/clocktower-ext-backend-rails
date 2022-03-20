@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 
   # Clean user input before passing to the node JWT verifier
   def sanitize_token token 
-    token.tr('^A-Za-z0-9', '')
+    token.tr('^A-Za-z0-9\.', '')
   end
 
   def decoded_token
