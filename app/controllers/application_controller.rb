@@ -19,9 +19,9 @@ class ApplicationController < ActionController::Base
     request.headers["Authorization"]
   end
 
-  # Clean user input before passing to the node JWT verifier
-  def sanitize_token token 
-    token.tr('^A-Za-z0-9\.', '')
+  # check that the token is a real JWT
+  def validate_token_integrity(token)
+    /^[\w-]+\.[\w-]+\.[\w-]+$/.match?(token)
   end
 
   def decoded_token
@@ -36,8 +36,12 @@ class ApplicationController < ActionController::Base
       raise "Invalid Authorization Token"
     end
 
-    # token = sanitize_token(auth[1])
     token = auth[1]
+
+    if !validate_token_integrity(token)
+      logger.error "Invalid token: #{token}"
+      return {valid: "false"}
+    end
 
     secret = Rails.application.credentials.twitch[:extension_secret]
     algorithm = Rails.application.credentials.jwt_algorithm
@@ -46,7 +50,7 @@ class ApplicationController < ActionController::Base
     begin
       token_json = `#{node_path} app/javascript/verify_jwt.js #{token} #{secret}`
     rescue
-      logger.error "Could not validate token #{token}"
+      logger.error "Invalid token: #{token}"
       return { valid: false }
     end
 
