@@ -14,5 +14,7 @@ Rails.application.routes.draw do
 
   get "/setup", to: "home#index"
 
+  get "/legal/privacy-policy", to: "home#privacy"
+
   root "home#index"
 end
