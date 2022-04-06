@@ -1,4 +1,4 @@
-# Paperweight Clocktower Backend
+# Clocktower Companion Backend
 This is the backend of a Twitch extension for streamed games of Blood on the Clocktower.
 
 This extension is designed to be used in conjunction with the unofficial [Townsquare](https://clocktower.online/) web app. 

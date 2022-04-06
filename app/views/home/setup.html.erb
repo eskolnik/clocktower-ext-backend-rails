@@ -1,0 +1,121 @@
+<% link_classname = "text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-600 visited:text-purple-600 dark:visited:text-purple-400 hover:underline" %>
+
+<div id="setup-body">
+    <div class="bg-slate-200 dark:bg-slate-800 text-gray-600 dark:text-gray-100 h-max leading-normal">
+       
+
+        <div class="p-10">
+            <div id="dark-mode-controls">
+                <div class="w-10 absolute top-5 right-36">
+                    <label class="relative flex justify-between items-center group p-2 text-xl">
+                        Dark Mode
+                        <input id="dark-mode-toggle" type="checkbox" checked class="absolute left-1/2 -translate-x-1/2 w-full h-full peer hidden rounded-md" onclick="" />
+                        <span class="w-16 h-10 flex items-center flex-shrink-0 ml-4 p-1 bg-gray-400 rounded-full duration-300 ease-in-out peer-checked:bg-green-400 after:w-8 after:h-8 after:bg-white after:rounded-full after:shadow-md after:duration-300 peer-checked:after:translate-x-6 group-hover:after:translate-x-1"></span>
+                    </label>
+                </div>
+            </div>
+        
+            <div id="header" class="mb-10">
+                <p class="text-4xl">Clocktower Companion Setup Instructions</p>
+                <div class="text-2xl bg-red-300 dark:bg-red-900 border-2 border-red-500 rounded-lg max-w-fit mt-3 p-3">UNDER CONSTRUCTION</div>
+            </div>
+
+            <div id="table-of-contents" class="float-right bg-slate-300 border-purple-400 dark:border-purple-800 dark:bg-slate-700 w-1/5 border-solid border-2 rounded m-10 py-5 px-3">
+                <h3 class="text-xl">Table of Contents</h3>
+                <ol class="list-disc list-inside">
+                    <li><a href="#setup-overlay" class="<%= link_classname %>">Set Up Overlay</a>
+                        <ul class="list-disc list-inside indent-5">
+                            <li><a href="#screenshot-instructions" class="<%= link_classname %>">Screenshot Stream Layout</a></li>
+                            <li><a href="#position-overlay" class="<%= link_classname %>">Position Overlay</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#plugin-setup" class="<%= link_classname %>">Set Up Browser Plugin</a></li>
+                </ol>
+            </div>
+
+            <div id="setup-overlay">
+                <h1 class="text-4xl">Position the overlay</h1>
+
+                <p>
+                    The Clocktower Companion extension needs to know where the town square will be located on the
+                    screen in order to display the stream overlay in the correct position. You will need to take an screenshot
+                    of your town square on stream and adjust the overlay until it is aligned with that screenshot.
+                </p>
+                
+                <div id="screenshot-instructions" class="mt-5">
+                    <h2 class="text-2xl">1. Take a screenshot of your stream layout</h2>
+                    <p>
+                        Take a screenshot of your stream layout, with the grimoire displayed in the location you'll have it for streaming. 
+                        The best way to do this is in your streaming software (OBS, Streamlabs, etc).
+                        For best results, have your grimoire set up with 5 - 7 players for this screenshot. (example photo)
+                    </p>
+
+                    <h4 id="screenshot-instuctions-obs" class="text-xl mt-5">OBS</h4>
+
+                    <p>To take a screenshot in OBS, right click on the approriate scene and select "Screenshot (Scene)". (screenshot) Your screenshot file will be
+                    saved to the OBS Recordings Path folder, which you can find in the Settings menu under Output.</p>
+
+                    <p>This Youtube video demonstrates how to take a screenshot in OBS: 
+                        <a href="https://www.youtube.com/watch?v=PBQH3_wEmJI" class="<%= link_classname %>">https://www.youtube.com/watch?v=PBQH3_wEmJI</a>.
+                    </p>
+
+                    <h4 class="text-xl mt-5">Twitch Stream</h4>
+                    If you screenshot a running twitch stream instead, be sure to capture only the 16:9 Twitch player, and not any of the
+                    black buffer area that Twitch adds. (screenshot with black buffers excluded)
+
+                    <p>Upload your screenshot in the extension configuration screen. (example photo)</p>
+                    
+                </div>
+                <div id="position-overlay" class="mt-10">
+                    <h2 class="text-2xl">2. Adjust the overlay position</h2>
+                    <p class="mt-5">Now that you have your screenshot, add or remove players in the configuration screen (suzi: where is the configuration screen? how do they get to it? how do they add players?) to match the image you uploaded. (screenshot)</p>
+
+                    <p class="mt-5">Adjust the overlay until the green circles are just covering your grimoire tokens. (screenshot)</p>
+
+                    <p class="mt-5"> Save your configuration. (this isn't an appropriate screenshot for just the save action)</p>
+                    <%= image_tag "config_position_numbered.png", class: "inline-block h-full" %>
+                </div>
+
+            </div>
+            <div id="plugin-setup" class="mt-10">
+                <h1 class="text-4xl">Set up the Town Square Plugin</h1>
+
+                <ul class="list-none list-inside">
+                    <li> Generate and save a secret key (in twitch? in github? locally?). Then, copy the key you've generated.</li>
+                    [SCREENSHOT OF KEY GEN FORM]
+
+                    <li> Drag the bookmarklet to your bookmarks bar.</li>
+                    [GIF OF DRAGGING THE BOOKMARKLET]
+
+                    <li> Navigate to the Town Square web application (URL) in your browser, then click the bookmarklet. </li>
+                    You should see a Twitch icon appear in the top right corner of the window.
+                    [SCREENSHOT OF BOOKMARKLET IN BOOKMARK BAR AND TWITCH ICON] 
+
+                    <li> Click the Twitch icon to open the plugin menu.</li>
+
+                    <div class="flex justify-between h-72">
+                        <li> Paste the secret key into the Secret Key text box. Then, click the Enable button to start sharing your grimoire with the extension.
+                            <br />You can disable or re-enable this setting at any time.</li>
+                        <%= image_tag "clocktower_townsquare_plugin_menu.png", class: "inline-block h-full" %>
+                    </div>
+
+                    <li> Close the plugin menu by clicking the 'close' button or clicking the Twitch icon again.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const setupBody = document.querySelector("#setup-body");
+    const checkbox = document.querySelector("#dark-mode-toggle");
+
+    const toggleDarkMode = () => {
+        if(checkbox.checked) {
+            setupBody.classList.add("dark");
+        } else {
+            setupBody.classList.remove("dark");
+        }
+    }
+    toggleDarkMode();
+    checkbox.addEventListener("click", toggleDarkMode);
+</script>
