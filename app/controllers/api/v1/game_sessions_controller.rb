@@ -1,4 +1,4 @@
-class GameSessionsController < ApplicationController
+class Api::V1::GameSessionsController < ApplicationController
   before_action :restrict_to_development, :only => [:index]
 
   def index

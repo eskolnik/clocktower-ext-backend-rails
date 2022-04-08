@@ -1,4 +1,4 @@
-class BroadcastersController < ApplicationController
+class Api::V1::BroadcastersController < ApplicationController
   before_action :restrict_to_development, :only => [:index]
 
   def index
