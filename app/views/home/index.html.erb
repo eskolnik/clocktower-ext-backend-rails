@@ -58,8 +58,6 @@
                         For best results, have your grimoire set up with 5 - 7 players for this screenshot.
                         
                     </p>
-                    <p>Once you've taken your screenshot, upload it in the extension configuration screen.</p>
-
 
                     <div class="flex flex-row justify-between items-center mt-5">
                         <div>
@@ -78,7 +76,10 @@
                     If you screenshot a running twitch stream instead, be sure to capture only the 16:9 Twitch player, and not any of the
                     black buffer area that Twitch adds when the browser window is too wide.
 
-                    
+                    <div class="flex flex-row justify-between items-center mt-5">
+                        <p>Once you've taken your screenshot, upload it in the extension configuration screen.</p>
+                        <%= image_tag "config_upload_bg.png", class: "inline-block h-30" %>
+                    </div>
                 </div>
                 <div id="position-overlay" class="mt-5">
                     <h2 class="text-2xl">2. Adjust the overlay position</h2>
@@ -134,6 +135,7 @@
                         <p> Navigate to the Town Square web application (<a href="https://clocktower.online" target="_blank" class="<%= link_classname %>">clocktower.online</a>) in your browser, then click the bookmarklet.</p>
                         <p> You should see a <%= render "cc_icon" %> icon appear in the top right corner of the window.</p>
                         <p> Click the <%= render "cc_icon" %> icon to open the plugin menu.</p>
+                        <p> If you navigate away from the town square page, you'll need to click the bookmarklet again.</p>
                     </div>
                     <%= image_tag "config_cc_icon_menu_closed.png", class: "inline-block h-20" %>
                 </div>
