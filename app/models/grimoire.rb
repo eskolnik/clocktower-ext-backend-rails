@@ -5,6 +5,10 @@ class Grimoire < ApplicationRecord
 
   after_save :send_to_twitch
 
+  def self.empty_grimoire 
+    return Grimoire.new(players: "{}", bluffs: "[]")
+  end
+
   # decode JSON or return empty JSON object if nil
   def parse(val, default = {})
     val.nil? ? default : JSON.parse(val)
@@ -36,7 +40,8 @@ class Grimoire < ApplicationRecord
     token = broadcaster.json_web_token
     channel_id = broadcaster.channel_id
 
-    message = self.json_view
+    # If session is inactive, send an empty grimoire
+    message = self.game_session.is_active ? self.json_view : Grimoire.empty_grimoire.json_view
 
     body = {
       broadcaster_id: channel_id,

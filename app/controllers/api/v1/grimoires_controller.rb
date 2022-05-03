@@ -31,7 +31,10 @@ class Api::V1::GrimoiresController < ApplicationController
       return
     end
 
-    grimoire = broadcaster&.game_session&.grimoire
+    session = broadcaster&.game_session
+
+    # If session is inactive, return empty grimoire
+    grimoire = session.is_active ? session&.grimoire : Grimoire.empty_grimoire
 
     if (!grimoire)
       render :json => { status: "error", message: "Grimoire Not Found: #{params[:id]}" }

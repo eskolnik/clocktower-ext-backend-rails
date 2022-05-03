@@ -25,5 +25,11 @@ class Api::V1::GameSessionsController < ApplicationController
     session.is_active = params[:is_active]
 
     session.save
+
+    grimoire = self.grimoire
+
+    if grimoire
+      grimoire.send_to_twitch
+    end
   end
 end
