@@ -26,7 +26,7 @@ class Api::V1::GameSessionsController < ApplicationController
 
     session.save
 
-    grimoire = self.grimoire
+    grimoire = session.grimoire
 
     if grimoire
       grimoire.send_to_twitch
